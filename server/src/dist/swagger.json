@@ -1,0 +1,223 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "State Management API",
+        "version": "1.0.0",
+        "description": "API documentation for the State Management system."
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "schemes": ["http"],
+    "paths": {
+        "/register": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "Register a new user",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UserRegistration"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User registered successfully"
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "Log in a user",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UserLogin"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User logged in successfully",
+                        "schema": {
+                            "$ref": "#/definitions/LoginResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/states": {
+            "post": {
+                "tags": ["States"],
+                "summary": "Create a new state",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/State"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "State created successfully"
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    }
+                }
+            },
+            "get": {
+                "tags": ["States"],
+                "summary": "Get all states",
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "A list of states",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/State"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/states/{id}": {
+            "put": {
+                "tags": ["States"],
+                "summary": "Update a state",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/State"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "State updated successfully"
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "404": {
+                        "description": "State not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["States"],
+                "summary": "Delete a state",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "State deleted successfully"
+                    },
+                    "404": {
+                        "description": "State not found"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "State": {
+            "type": "object",
+            "required": ["name", "description", "status", "createdBy"],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "createdBy": {
+                    "type": "string"
+                }
+            }
+        },
+        "UserRegistration": {
+            "type": "object",
+            "required": ["username", "password"],
+            "properties": {
+                "username": {
+                    "type": "string",
+                    "description": "The username for registration"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "The password for the new user"
+                }
+            }
+        },
+        "UserLogin": {
+            "type": "object",
+            "required": ["username", "password"],
+            "properties": {
+                "username": {
+                    "type": "string",
+                    "description": "The username for login"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "The password for login"
+                }
+            }
+        },
+        "LoginResponse": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string",
+                    "description": "JWT token for authenticated user"
+                }
+            }
+        }
+    }
+}
